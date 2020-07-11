@@ -1,0 +1,52 @@
+models:
+  Category:
+    status: unsignedtinyinteger default:'2' comment:'状态1无效2有效'
+    title: string:40 default:'' comment:'分类名称'
+    softDeletes
+    relationships:
+      hasMany: Post
+
+  Post:
+    user_id: unsignedinteger default:'0' comment:'作者id'
+    status: unsignedtinyinteger default:'1' comment:'状态1无效2有效'
+    title: string:400 default:'' comment:'文章标题'
+    content: longtext nullable comment:'文章内容'
+    softDeletes
+    relationships:
+      morphMany: Comment, Tag
+      morphOne: Image
+      belongsTo: User
+  Video:
+    user_id: unsignedinteger default:'0' comment:'观看人id'
+    status: unsignedtinyinteger default:'1' comment:'状态1无效2有效'
+    title: string:400 default:'' comment:'视频名称'
+    url: string:400 default:'' comment:'视频链接'
+    softDeletes
+    relationships:
+      morphMany: Comment, Tag
+      morphOne: Image
+
+  # 多态一对多
+  Tag:
+    name: string:50 comment:'标签名称'
+    softDeletes
+    relationships:
+      morphTo: Tagable
+
+  # 多态一对多
+  Comment:
+    content: string:400 default:'' comment:'评论内容'
+    softDeletes
+    relationships:
+      morphTo: Commentable
+
+  # 多态一对一
+  Image:
+    name: string:100 default:'' comment:'图片名称'
+    url: string:300 default:'' comment:'图片地址'
+    softDeletes
+    relationships:
+      morphTo: Imageable
+
+seeders: Category, Post, Video, Tag, Comment, Image
+

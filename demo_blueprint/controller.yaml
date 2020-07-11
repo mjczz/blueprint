@@ -1,0 +1,16 @@
+controllers:
+  Post:
+    resource: api.index, api.store, api.update, api.delete
+    download:
+      find: post.id
+      resource: post
+    show:
+      query: where:post.id
+      resource: post
+
+  Category:
+    resource: api.index, api.store, api.update, api.delete, api.show
+    changeStatus:
+      query: where:post.id
+      resource: post
+

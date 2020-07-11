@@ -1,0 +1,31 @@
+models:
+
+  ### 多态：一对一
+  Pic:
+    url: string:300 default:'' comment:'图片链接'
+    relationships:
+      morphTo: Picable
+
+  AdUser:
+    name: string:100 default:'' comment:'名称'
+    relationships:
+      morphOne: Pic
+
+  BdUser:
+    name: string:100 default:'' comment:'名称'
+    relationships:
+      morphOne: Pic
+
+
+  Post:
+    user_id: unsignedinteger default:'0' comment:'作者id'
+    status: unsignedtinyinteger default:'1' comment:'状态1无效2有效'
+    title: string:400 default:'' comment:'文章标题'
+    content: longtext nullable comment:'文章内容'
+    softDeletes
+    relationships:
+      hasMany: Comment
+      belongsToMany: Media, Site
+      hasOne: Image
+      morphMany: Comment
+
