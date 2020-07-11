@@ -17,10 +17,10 @@ class CreateNewsTable extends Migration
             $table->id();
             $table->string('title', 40)->default('')->comment('标题');
             $table->longText('content')->nullable()->comment('内容');
-            $table->unsignedTinyInteger('publish_status')->default('0')->comment('状态1已发布0未发布');
-            $table->unsignedTinyInteger('news_top')->default('0')->comment('状态1置顶0非置顶');
-            $table->unsignedTinyInteger('news_recommend')->default('0')->comment('状态1推荐0非推荐');
-            $table->unsignedTinyInteger('news_type')->default('0')->comment('属性0文字新闻1图片新闻');
+            $table->unsignedTinyInteger('publish_status')->default('2')->comment('发布状态1已发布2未发布');
+            $table->unsignedTinyInteger('news_top')->default('2')->comment('置顶状态1置顶2非置顶');
+            $table->unsignedTinyInteger('news_recommend')->default('2')->comment('推荐状态1推荐2非推荐');
+            $table->unsignedTinyInteger('news_type')->default('1')->comment('属性1文字新闻2图片新闻');
             $table->unsignedTinyInteger('sort')->default('100')->comment('排序越小越在前');
             $table->timestamp('published_at')->nullable()->comment('发布时间');
             $table->softDeletes();

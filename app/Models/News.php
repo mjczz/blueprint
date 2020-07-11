@@ -39,6 +39,19 @@ class News extends BaseModel
         'sort' => 'integer',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($model) {
+            // 修改状态值，为了方便查询使用$query->when()方法,传0不筛选
+            if ($model->news_top == 0) $model->news_top = 2;
+            if ($model->news_type == 0) $model->news_type = 2;
+            if ($model->news_recommend == 0) $model->news_recommend = 2;
+            if ($model->publish_status == 0) $model->publish_status = 2;
+        });
+    }
+
     /**
      * 查询条件
      *

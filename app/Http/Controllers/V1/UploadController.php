@@ -25,7 +25,7 @@ class UploadController extends ApiBaseController
         $urls = [];
 
         foreach ($request->file() as $file) {
-            $urls[] = env('APP_URL').Storage::url($file->store('edit_file', 'admin'));
+            $urls[] = Storage::url($file->store('edit_file', 'admin'));
         }
 
         return [

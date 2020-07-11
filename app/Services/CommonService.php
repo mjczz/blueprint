@@ -13,30 +13,35 @@ use Illuminate\Support\Str;
 
 class CommonService
 {
+    /**
+     * 获取数据字典
+     *
+     * @param null $key
+     *
+     * @return array|mixed
+     */
     public static function getOptions($key = null)
     {
         $options = [
             'news_top' => [
                 '1' => '是',
-                '0' => '否'
+                '2' => '否'
             ],
             'news_recommend' => [
                 '1' => '是',
-                '0' => '否'
+                '2' => '否'
             ],
             'news_type' => [
-                '0' => '文字新闻',
-                '1' => '图片新闻'
+                '1' => '文字新闻',
+                '2' => '图片新闻'
             ],
             'publish_status' => [
                 '1' => '是',
-                '0' => '否'
+                '2' => '否'
             ],
         ];
 
-        if (isset($key)) {
-            return !empty($options[$key]) ? $options[$key] : [];
-        }
+        if (isset($key)) return !empty($options[$key]) ? $options[$key] : [];
 
         return $options;
     }
