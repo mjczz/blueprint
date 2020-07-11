@@ -2,10 +2,10 @@ models:
   News:
     title: string:40 default:'' comment:'标题'
     content: longtext nullable comment:'内容'
-    publish_status: unsignedtinyinteger default:'2' comment:'状态1已发布2未发布'
-    news_top: unsignedtinyinteger default:'2' comment:'状态1置顶2非置顶'
-    news_recommend: unsignedtinyinteger default:'2' comment:'状态1推荐2非推荐'
-    news_type: unsignedtinyinteger default:'2' comment:'属性1文字新闻2图片新闻'
+    publish_status: unsignedtinyinteger default:'0' comment:'状态1已发布0未发布'
+    news_top: unsignedtinyinteger default:'0' comment:'状态1置顶0非置顶'
+    news_recommend: unsignedtinyinteger default:'1' comment:'状态1推荐0非推荐'
+    news_type: unsignedtinyinteger default:'0' comment:'属性0文字新闻1图片新闻'
     sort: unsignedtinyinteger default:'100' comment:'排序越小越在前'
     published_at: timestamp nullable comment:'发布时间'
     softDeletes
