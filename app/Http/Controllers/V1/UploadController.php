@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\V1;
 
+use App\Models\EditorFiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,10 +24,21 @@ class UploadController extends ApiBaseController
     public function uploadEditFile(Request $request)
     {
         $urls = [];
+        $data = [];
 
         foreach ($request->file() as $file) {
-            $urls[] = Storage::url($file->store('edit_file', 'admin'));
+            $url = Storage::url($file->store('edit_file', 'admin'));
+            $urls[] = $url;
+
+            $data[] = [
+                'path' => $url,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
         }
+
+
+        EditorFiles::insert($data);
 
         return [
             "errno" => 0,

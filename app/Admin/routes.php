@@ -13,4 +13,6 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
     $router->resource('news', NewsController::class);
+    $router->resource('editor-files', EditorFilesController::class);
+    $router->resource('sites', SiteController::class);
 });
