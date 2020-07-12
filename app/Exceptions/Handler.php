@@ -3,10 +3,9 @@
 namespace App\Exceptions;
 
 use App\Traits\ApiReturn;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
-use function route;
-use function strpos;
 
 class Handler extends ExceptionHandler
 {
@@ -55,11 +54,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        if ($exception instanceof ApiCommonException) {
-            return $this->fail($exception);
-        }
-
         if (strpos($request->route()->getPrefix(), 'v1') !== false) {
+            if ($exception instanceof ModelNotFoundException) {
+                return $this->json(null);
+            }
+
             return $this->fail($exception);
         }
 
