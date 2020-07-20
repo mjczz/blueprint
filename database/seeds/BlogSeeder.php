@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class NewSeeder extends Seeder
+class BlogSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class NewSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\New::class, 5)->create();
+        factory(\App\Models\Blog::class, 5)->create();
     }
 }
