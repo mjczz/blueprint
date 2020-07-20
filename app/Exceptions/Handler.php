@@ -55,7 +55,7 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         if (strpos($request->route()->getPrefix(), 'v1') !== false) {
-            if ($exception instanceof ModelNotFoundException) {
+            if ($exception instanceof ModelNotFoundException && $request->getMethod() == 'GET') {
                 return $this->json(null);
             }
 
