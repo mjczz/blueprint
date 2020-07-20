@@ -5,7 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewsStoreRequest;
 use App\Http\Requests\NewsUpdateRequest;
-use App\Http\Resources\News as NewsResource;
+use App\Http\Resources\NewsResource;
 use App\Http\Resources\NewsCollection;
 use App\Models\News;
 use Illuminate\Http\Request;
@@ -14,7 +14,6 @@ class NewsController extends ApiBaseController
 {
     /**
      * @param \Illuminate\Http\Request $request
-     * @return \App\Http\Resources\NewsCollection
      */
     public function index(Request $request)
     {
@@ -36,7 +35,8 @@ class NewsController extends ApiBaseController
 
     /**
      * @param \App\Http\Requests\NewsStoreRequest $request
-     * @return \App\Http\Resources\News
+     *
+     * @return \App\Http\Resources\NewsResource
      */
     public function store(NewsStoreRequest $request)
     {
@@ -48,7 +48,8 @@ class NewsController extends ApiBaseController
     /**
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\News $news
-     * @return \App\Http\Resources\News
+     *
+     * @return \App\Http\Resources\NewsResource
      */
     public function show(Request $request, News $news)
     {
@@ -58,11 +59,12 @@ class NewsController extends ApiBaseController
     /**
      * @param \App\Http\Requests\NewsUpdateRequest $request
      * @param \App\Models\News $news
-     * @return \App\Http\Resources\News
+     *
+     * @return \App\Http\Resources\NewsResource
      */
     public function update(NewsUpdateRequest $request, News $news)
     {
-        $news->update([]);
+        $news->update($request->all());
 
         return $this->sucess();
     }
