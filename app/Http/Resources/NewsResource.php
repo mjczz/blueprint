@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use DateTimeInterface;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class NewsResource extends JsonResource
@@ -26,6 +27,13 @@ class NewsResource extends JsonResource
             'news_type' => $this->news_type,
             'sort' => $this->sort,
             'published_at' => $this->published_at,
+            'created_at' => $this->created_at,
+            //'published_at' => $this->published_at instanceof DateTimeInterface
+            //    ? $this->published_at->format("Y-m-d H:i:s")
+            //    : $this->published_at,
+            //'created_at' => $this->created_at instanceof DateTimeInterface
+            //    ? $this->created_at->format("Y-m-d H:i:s")
+            //    : $this->created_at,
         ];
     }
 }

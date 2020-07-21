@@ -9,10 +9,10 @@ $factory->define(Blog::class, function (Faker $faker) {
     return [
         'title' => $faker->name,
         'content' => $faker->paragraphs(3, true),
-        'publish_status' => $faker->randomDigitNotNull,
-        'news_top' => $faker->randomDigitNotNull,
-        'news_recommend' => $faker->randomDigitNotNull,
-        'news_type' => $faker->randomDigitNotNull,
+        'publish_status' => random_int(1, 2),
+        'news_top' => random_int(1, 2),
+        'news_recommend' => random_int(1, 2),
+        'news_type' => random_int(1, 2),
         'sort' => $faker->randomDigitNotNull,
         'published_at' => $faker->dateTime(),
     ];

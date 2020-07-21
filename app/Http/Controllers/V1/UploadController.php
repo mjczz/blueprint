@@ -37,7 +37,6 @@ class UploadController extends ApiBaseController
             ];
         }
 
-
         EditorFiles::insert($data);
 
         return [

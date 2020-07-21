@@ -1,0 +1,20 @@
+models:
+  Movie:
+    title: string:40 default:'' comment:'标题'
+    desc: longtext nullable comment:'描述'
+    publish_status: unsignedtinyinteger default:'2' comment:'状态1已发布2未发布'
+    movie_top: unsignedtinyinteger default:'2' comment:'状态1置顶2非置顶'
+    movie_recommend: unsignedtinyinteger default:'2' comment:'状态1推荐2非推荐'
+    movie_hot: unsignedtinyinteger default:'2' comment:'状态1热搜2非热搜'
+    sort: unsignedinteger default:'100' comment:'排序越小越在前'
+    published_at: timestamp nullable comment:'上映时间'
+    view_num: unsignedinteger default:'0' comment:'观看人数'
+    score: decimal:4,1 default:'0' comment:'评分'
+    softDeletes
+
+controllers:
+  Movie:
+    resource: api
+
+seeders: Movie
+

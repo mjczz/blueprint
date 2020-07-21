@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class News extends BaseModel
+class Movie extends Model
 {
     use SoftDeletes;
 
@@ -16,13 +16,15 @@ class News extends BaseModel
      */
     protected $fillable = [
         'title',
-        'content',
+        'desc',
         'publish_status',
-        'news_top',
-        'news_recommend',
-        'news_type',
+        'movie_top',
+        'movie_recommend',
+        'movie_hot',
         'sort',
         'published_at',
+        'view_num',
+        'score',
     ];
 
     /**
@@ -33,27 +35,22 @@ class News extends BaseModel
     protected $casts = [
         'id' => 'integer',
         'publish_status' => 'integer',
-        'news_top' => 'integer',
-        'news_recommend' => 'integer',
-        'news_type' => 'integer',
+        'movie_top' => 'integer',
+        'movie_recommend' => 'integer',
+        'movie_hot' => 'integer',
         'sort' => 'integer',
-        'created_at' => 'datetime Y-m-d H:i:s',
-        'updated_at' => 'datetime Y-m-d H:i:s',
-        'published_at' => 'datetime Y-m-d H:i:s'
+        'view_num' => 'integer',
+        'score' => 'decimal:1',
     ];
 
-    public static function boot()
-    {
-        parent::boot();
-
-        static::saving(function ($model) {
-            // 修改状态值，为了方便查询使用$query->when()方法,传0不筛选
-            if ($model->news_top == 0) $model->news_top = 2;
-            if ($model->news_type == 0) $model->news_type = 2;
-            if ($model->news_recommend == 0) $model->news_recommend = 2;
-            if ($model->publish_status == 0) $model->publish_status = 2;
-        });
-    }
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'published_at',
+    ];
 
     /**
      * 查询条件
@@ -63,16 +60,12 @@ class News extends BaseModel
      */
     public static function getWhere($query, $request)
     {
-        $query->when($request['news_top'], function($query) use ($request){
-            $query->where("news_top", $request['news_top']);
+        $query->when($request['movie_top'], function($query) use ($request){
+            $query->where("movie_top", $request['movie_top']);
         });
 
-        $query->when($request['news_type'], function($query) use ($request){
-            $query->where("news_type", $request['news_type']);
-        });
-
-        $query->when($request['news_recommend'], function($query) use ($request){
-            $query->where("news_recommend", $request['news_recommend']);
+        $query->when($request['movie_recommend'], function($query) use ($request){
+            $query->where("movie_recommend", $request['movie_recommend']);
         });
 
         $query->when($request['publish_status'], function($query) use ($request){
@@ -93,7 +86,7 @@ class News extends BaseModel
                 $query->orderBy('id', 'asc');
                 break;
             default:
-                $query->orderBy('news_top', 'desc')->orderBy('id', 'desc');
+                $query->orderBy('movie_top', 'desc')->orderBy('id', 'desc');
                 break;
         }
     }
