@@ -31,7 +31,7 @@ class NewsController extends AdminController
         $grid->column('publish_status', __('发布'))->switch();
         $grid->column('news_top', __('置顶'))->switch();
         $grid->column('news_recommend', __('推荐'))->switch();
-        $grid->column('news_type')->editable('select', options('news_type'));
+        $grid->column('news_type', __("属性"))->editable('select', options('news_type'));
         $grid->column('sort', __('排序'))->editable();
         $grid->column('published_at', __('发布时间'))->editable('datetime');;
         $grid->column('created_at', __('创建时间'));
@@ -39,6 +39,27 @@ class NewsController extends AdminController
 
         $grid->actions(function ($actions) {
             $actions->disableDelete();
+        });
+
+        // 导出
+        $grid->export(function ($export) {
+            $export->filename('新闻列表'.date('Ymd').'.csv');
+
+            $export->column('news_type', function ($value, $original) {
+                return options('news_type')[$original] ?? '-';
+            });
+
+            $export->column('news_recommend', function ($value, $original) {
+                return options('news_recommend')[$original] ?? '-';
+            });
+
+            $export->column('publish_status', function ($value, $original) {
+                return options('publish_status')[$original] ?? '-';
+            });
+
+            $export->column('news_top', function ($value, $original) {
+                return options('news_top')[$original] ?? '-';
+            });
         });
 
         $grid->filter(function ($filter) {
