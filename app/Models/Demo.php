@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -74,6 +75,13 @@ class Demo extends BaseModel
         $query->when($request['publish_status'], function($query) use ($request){
             $query->where("publish_status", $request['publish_status']);
         });
+
+        // 筛选关联表的字段
+        $query->when($request['user_name'], function($query) use ($request){
+            $query->whereHas('user', function($query) use ($request){
+                $query->where("name", "like", "%{$request['user_name']}%");
+            });
+        });
     }
 
     /**
@@ -94,4 +102,11 @@ class Demo extends BaseModel
         }
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

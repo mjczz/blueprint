@@ -9,6 +9,7 @@ $factory->define(Demo::class, function (Faker $faker) {
     return [
         'title' => $faker->name,
         'desc' => $faker->text,
+        'user_id' => $faker->numberBetween(1, 20),
         'publish_status' => random_int(1, 2),
         'demo_top' => random_int(1, 2),
         'demo_recommend' => random_int(1, 2),

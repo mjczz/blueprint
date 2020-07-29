@@ -6,15 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DemoStoreRequest;
 use App\Http\Requests\DemoUpdateRequest;
 use App\Http\Resources\DemoResource;
+use App\Http\Resources\DemoUserResource;
 use App\Models\Demo;
-use App\Models\Demo2;
 use Illuminate\Http\Request;
-use function response;
 
 class DemoController extends ApiBaseController
 {
     /**
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -35,9 +36,34 @@ class DemoController extends ApiBaseController
     }
 
     /**
-     * @param \App\Http\Requests\NewsStoreRequest $request
+     * 关联表查询
      *
-     * @return \App\Http\Resources\NewsResource
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function listData(Request $request)
+    {
+        $query = Demo::with('user');
+
+        // 查询条件
+        Demo::getWhere($query, $request);
+
+        // 排序条件
+        Demo::orderBy($query, $request);
+
+        /**
+         * @var \Illuminate\Pagination\LengthAwarePaginator
+         */
+        $paginator = $query->paginate($request['limit'] ?? $this->limit);
+
+        return $this->paginate(DemoUserResource::collection($paginator->items()), $paginator);
+    }
+
+    /**
+     * @param DemoStoreRequest $request
+     *
+     * @return \think\response\Json
      */
     public function store(DemoStoreRequest $request)
     {
@@ -47,10 +73,10 @@ class DemoController extends ApiBaseController
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Demo $demo
+     * @param Request $request
+     * @param Demo    $demo
      *
-     * @return \App\Http\Resources\NewsResource
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, Demo $demo)
     {
@@ -58,10 +84,10 @@ class DemoController extends ApiBaseController
     }
 
     /**
-     * @param \App\Http\Requests\NewsUpdateRequest $request
-     * @param \App\Models\Demo $demo
+     * @param DemoUpdateRequest $request
+     * @param Demo              $demo
      *
-     * @return \App\Http\Resources\NewsResource
+     * @return \think\response\Json
      */
     public function update(DemoUpdateRequest $request, Demo $demo)
     {
@@ -71,8 +97,11 @@ class DemoController extends ApiBaseController
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Demo $demo
+     * @param Request $request
+     * @param Demo    $demo
+     *
+     * @return \think\response\Json
+     * @throws \Exception
      */
     public function destroy(Request $request, Demo $demo)
     {

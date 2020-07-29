@@ -16,6 +16,7 @@ class CreateDemosTable extends Migration
         Schema::create('demos', function (Blueprint $table) {
             $table->id();
             $table->string('title', 40)->default('')->comment('标题');
+            $table->unsignedInteger('user_id')->default('0')->comment('用户id');
             $table->longText('desc')->nullable()->comment('描述');
             $table->unsignedTinyInteger('publish_status')->default('2')->comment('发布状态1已发布2未发布');
             $table->unsignedTinyInteger('demo_top')->default('2')->comment('置顶状态1置顶2非置顶');
