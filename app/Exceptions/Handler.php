@@ -57,8 +57,13 @@ class Handler extends ExceptionHandler
     {
         if (strpos($request->route()->getPrefix(), 'v1') !== false) {
             // 路由模型绑定查询不到数据异常
-            if ($exception instanceof ModelNotFoundException && $request->getMethod() == 'GET') {
-                return $this->json(null);
+            if ($exception instanceof ModelNotFoundException ) {
+                switch($request->getMethod()) {
+                    case 'GET':
+                        return $this->json(null);
+                    case 'DELETE':
+                        return $this->fail('数据不存在');
+                }
             }
 
             // 表单验证异常
