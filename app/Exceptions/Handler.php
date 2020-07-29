@@ -62,7 +62,10 @@ class Handler extends ExceptionHandler
                     case 'GET':
                         return $this->json(null);
                     case 'DELETE':
+                    case 'PUT':
                         return $this->fail('数据不存在');
+                    default:
+                        return $this->fail("我喜欢关之琳，赵丽颖");
                 }
             }
 
