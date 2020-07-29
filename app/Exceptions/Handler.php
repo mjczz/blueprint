@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use App\Traits\ApiReturn;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -55,8 +56,15 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         if (strpos($request->route()->getPrefix(), 'v1') !== false) {
+            // 路由模型绑定查询不到数据异常
             if ($exception instanceof ModelNotFoundException && $request->getMethod() == 'GET') {
                 return $this->json(null);
+            }
+
+            // 表单验证异常
+            if ($exception instanceof ValidationException) {
+                $err_msg = $exception->validator->errors()->first();
+                return $this->fail($err_msg);
             }
 
             return $this->fail($exception);
