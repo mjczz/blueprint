@@ -28,12 +28,7 @@ class NewsResource extends JsonResource
             'sort' => $this->sort,
             'published_at' => $this->published_at,
             'created_at' => $this->created_at,
-            //'published_at' => $this->published_at instanceof DateTimeInterface
-            //    ? $this->published_at->format("Y-m-d H:i:s")
-            //    : $this->published_at,
-            //'created_at' => $this->created_at instanceof DateTimeInterface
-            //    ? $this->created_at->format("Y-m-d H:i:s")
-            //    : $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

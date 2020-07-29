@@ -6,14 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\NewsStoreRequest;
 use App\Http\Requests\NewsUpdateRequest;
 use App\Http\Resources\NewsResource;
-use App\Http\Resources\NewsCollection;
 use App\Models\News;
 use Illuminate\Http\Request;
 
 class NewsController extends ApiBaseController
 {
     /**
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -34,9 +35,9 @@ class NewsController extends ApiBaseController
     }
 
     /**
-     * @param \App\Http\Requests\NewsStoreRequest $request
+     * @param NewsStoreRequest $request
      *
-     * @return \App\Http\Resources\NewsResource
+     * @return \think\response\Json
      */
     public function store(NewsStoreRequest $request)
     {
@@ -46,10 +47,10 @@ class NewsController extends ApiBaseController
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\News $news
+     * @param Request $request
+     * @param News    $news
      *
-     * @return \App\Http\Resources\NewsResource
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, News $news)
     {
@@ -57,14 +58,28 @@ class NewsController extends ApiBaseController
     }
 
     /**
-     * @param \App\Http\Requests\NewsUpdateRequest $request
-     * @param \App\Models\News $news
+     * @param NewsUpdateRequest $request
+     * @param News              $news
      *
-     * @return \App\Http\Resources\NewsResource
+     * @return \think\response\Json
      */
     public function update(NewsUpdateRequest $request, News $news)
     {
         $news->update($request->all());
+
+        return $this->sucess();
+    }
+
+    /**
+     * @param Request $request
+     * @param News    $news
+     *
+     * @return \think\response\Json
+     * @throws \Exception
+     */
+    public function destroy(Request $request, News $news)
+    {
+        $news->delete();
 
         return $this->sucess();
     }

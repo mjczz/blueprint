@@ -9,7 +9,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('demo/list', 'V1\DemoController@listData');
 Route::apiResource('demo', 'V1\DemoController');
 Route::apiResource('movie', 'V1\MovieController')->except('destroy');
 Route::apiResource('blog', 'V1\BlogController')->except('destroy');
-Route::apiResource('news', 'V1\NewsController')->except('destroy');
+Route::apiResource('news', 'V1\NewsController');
