@@ -167,8 +167,8 @@ return [
     'environments' => [
         'production' => [
             'supervisor-1' => [
-                //'connection' => 'redis',
-                'connection' => 'database',
+                'connection' => 'redis',
+                //'connection' => 'database',
                 'queue' => ['default'],
                 'balance' => 'simple',
                 'processes' => 10,

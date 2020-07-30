@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\News;
 use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,7 +19,7 @@ class Test implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($delay = 20)
+    public function __construct($delay = 60)
     {
         $this->delay($delay);
     }
@@ -30,8 +31,7 @@ class Test implements ShouldQueue
      */
     public function handle()
     {
-        $this->info("测试处理任务");
-        factory(User::class, 1)->create();
+        factory(News::class, 1)->create();
     }
 }
 

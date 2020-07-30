@@ -41,8 +41,6 @@ class DispatchJob extends Command
     {
         $this->info('分发任务');
 
-        $this->info('');
-
         Test::dispatch();
 
         $this->info('success');
