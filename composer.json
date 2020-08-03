@@ -20,8 +20,10 @@
         "laravel/telescope": "^3.5",
         "laravel/tinker": "^2.0",
         "mjczz/blueprint_ex": "dev-master",
+        "signe/redlock-php": "^1.1",
         "small-rural-dog/store": "^1.0",
-        "spatie/laravel-schemaless-attributes": "^1.7"
+        "spatie/laravel-schemaless-attributes": "^1.7",
+        "spatie/simple-excel": "^1.6"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.3",

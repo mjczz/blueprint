@@ -23,39 +23,38 @@ use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
 Route::get('/', function (Faker $faker) {
-    //$yourModel = new \App\Models\Test();
-    //$yourModel->extra_attributes->name = "value";
-
-    //$res = $yourModel->withExtraAttributes(['name' => 'value', 'name2' => 'value2'])->get();
-    //$res = $yourModel->withExtraAttributes(['name' => 'value'])->get();
-    //return $res;
-    //$yourModel->extra_attributes->name;
-    //$yourModel->save();
-    //return $yourModel;
-
-
-    $a = __('admin.created_at');
-    dd($a);
-    //$res =factory(  News::class,100)->create();
-    return $res;
-    //$res = factory(User::class, 100)->create();
-    //$res = factory(\App\Models\Post::class, 100)->create();
-    //return \App\Http\Resources\Post::collection($res);
-    //$res = factory(\App\Models\Video::class, 10)->create();
-    //$res = factory(\App\Models\Category::class, 100)->create();
-    //return $res;
-    //
-    $video = Video::find(1);
-    $video->image()->create([
-        'name' => $faker->name,
-        'url' => $faker->url,
-    ]);
-
-
     return view('welcome');
 });
 
-Route::any('/unauth', function() {
-    return ApiReturnService::fail('unAuth', '401');
-})->name('unAuth');
+// 测试高并发扣库存操作
+Route::get('/test_redlock', function (Faker $faker) {
+    $stock_num = 30;
+    $stock_key = 'stock_key';
+
+    // 初始化库存
+    //return \Illuminate\Support\Facades\Redis::set($stock_key, $stock_num);
+
+    $remind_stock = \Illuminate\Support\Facades\Redis::get($stock_key);
+    if ($remind_stock <= 0) dd('库存不足。。。。');
+
+    \App\Services\RedisRedlockService::distributionLock('test_redlock', 1000, function ($lock, $start_time) use ($stock_key) {
+        // 模拟处理时间，大于锁失效时间
+        sleep(6);
+
+        $v = \Illuminate\Support\Facades\Redis::get($stock_key);
+        if ($v - 1 >= 0) {
+            // 扣库存操作
+            $b = \Illuminate\Support\Facades\Redis::decr($stock_key);
+        }
+
+        \Illuminate\Support\Facades\Log::info(
+            "锁信息：".json_encode($lock).'---'.
+            '库存减去1后的值：'.($b ?? null).'----'.
+            '开始执行时间：'.$start_time.'----'.
+            '结束执行时间：'. \Illuminate\Support\Carbon::now()
+        );
+    });
+});
+
+
 
