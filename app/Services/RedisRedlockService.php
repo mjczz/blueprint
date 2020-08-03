@@ -70,26 +70,21 @@ class RedisRedlockService
      */
     public static function distributionLock($key = 'my_resource_name', $ttl = 1000, \Closure $closure)
     {
-        while (true) {
-            // 获得锁
-            $lock = self::lock($key, $ttl);
+        // 获得锁，里面会自动重试几次
+        $lock = self::lock($key, $ttl);
 
-            // 获得锁失败，重试
-            if ($lock == false) {
-                sleep(1);
-                continue;
-            };
+        // 获得锁失败，返回
+        if ($lock == false) return;
 
-            try {
-                $closure($key, $lock, Carbon::now());
-                return;
-            } catch(\Throwable $e) {
-                Log::info($e->getMessage());
-                return;
-            } finally {
-                self::unlock($lock);
-                return;
-            }
+        try {
+            $closure($key, $lock, Carbon::now());
+            return;
+        } catch(\Throwable $e) {
+            Log::info($e->getMessage());
+            return;
+        } finally {
+            self::unlock($lock);
+            return;
         }
     }
 
