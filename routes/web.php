@@ -27,7 +27,17 @@ Route::get('/', function (Faker $faker) {
     return view('welcome');
 });
 
-// redis执行lua脚本
+// redis执行lua脚本扣库存，测试超卖情况
+Route::get('/decr_stock', function (Faker $faker) {
+    $decrNum = rand(1, 100);
+    $res = \App\Services\CommonService::decrStock('stock_key2', $decrNum);
+
+    if ($res > 0) return '库存充足，扣除'.$decrNum.'后剩余:'.$res;
+
+    return '库存不足，扣除'.$decrNum;
+});
+
+// redis执行lua脚本限流
 Route::get('/redis_lua_req_limit', function (Faker $faker) {
     $key = 'limit_req_'.get_client_ip();
     $isLimited = \App\Services\CommonService::limitRequest($key, 10000, 30);

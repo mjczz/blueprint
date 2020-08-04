@@ -136,4 +136,41 @@ LUA;
         return $redis->eval($script, [$key, $maxRequestTimes, $expireTime], $numKeys);
     }
 
+    /**
+     * 扣库存
+     *
+     * @param $key
+     * @param $decrNum
+     *
+     * @return mixed
+     */
+    public static function decrStock($key, $decrNum)
+    {
+        $redis = new \Redis();
+        $redis->connect(env('REDIS_HOST'), env('REDIS_PORT'));
+        $redis->auth(env('REDIS_PASSWORD'));
+
+        $script = <<<LUA
+--- 要扣除的库存
+local decr_num = tonumber(ARGV[1])
+
+--- 获取当前值，找不到就设置为0
+local stock = tonumber(redis.call('get', KEYS[1]) or 0)
+if (stock == 0) then
+    return false
+end
+
+--- 库存不足
+if (stock - decr_num < 0) then
+    return false
+end
+
+-- 扣库存操作
+return redis.call('decrby', KEYS[1], decr_num)
+LUA;
+
+        $numKeys = 1; // numKeys指定KEYS数量，其余参数存放在ARGV里
+        return $redis->eval($script, [$key, $decrNum], $numKeys);
+    }
+
 }
