@@ -99,5 +99,41 @@ class CommonService
         return mb_strwidth($string, $encoding);
     }
 
+    /**
+     * @param     $key
+     * @param int $expireTime 过期时间
+     * @param int $maxRequestTimes 最大访问次数
+     */
+    public static function limitRequest($key, $expireTime = 1000, $maxRequestTimes = 1)
+    {
+        $redis = new \Redis();
+        $redis->connect(env('REDIS_HOST'), env('REDIS_PORT'));
+        $redis->auth(env('REDIS_PASSWORD'));
+
+        $script = <<<LUA
+local max = tonumber(ARGV[1])
+local interval_milliseconds = tonumber(ARGV[2])
+--- 获取当前值，找不到就设置为0
+local current = tonumber(redis.call('get', KEYS[1]) or 0)
+print {KEYS[1],ARGV[1],ARGV[2]}
+print {"当前访问次数：",current,"最大访问次数：",max,"过期时间：",interval_milliseconds}
+
+--- 限流判断，访问次数+1大于max表示超过最大访问次数
+if (current + 1 > max) then
+    return current + 1
+else
+--- 访问次数+1
+    redis.call('incrby', KEYS[1], 1)
+--- 如果没有访问过，设置过期时间
+    if (current == 0) then
+        redis.call('pexpire', KEYS[1], interval_milliseconds)
+    end
+    return false
+end
+LUA;
+
+        $numKeys = 1; // numKeys指定KEYS数量，其余参数存放在ARGV里
+        return $redis->eval($script, [$key, $maxRequestTimes, $expireTime], $numKeys);
+    }
 
 }
