@@ -8,6 +8,7 @@ use App\Services\ApiReturnService;
 use App\User;
 use Blueprint\Blueprint;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Redis;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +30,7 @@ Route::get('/', function (Faker $faker) {
 // 测试高并发扣库存操作-事务方式
 Route::get('/test_redlock', function (Faker $faker) {
     $stock_key = 'stock_key';
-    $remain_stock = \Illuminate\Support\Facades\Redis::get($stock_key);
+    $remain_stock = Redis::get($stock_key);
     if ($remain_stock <= 0) dd('库存不足。。。。');
 
     \App\Services\RedisRedlockService::distributionLock('caogege-zhen-shuai', 1000, function ($lock_key, $lock, $start_time) use ($stock_key) {
@@ -38,17 +39,17 @@ Route::get('/test_redlock', function (Faker $faker) {
 
         // 库存不足，直接返回
         $decr_num = rand(1, 10); // 模拟购买数量
-        $remain_stock = \Illuminate\Support\Facades\Redis::get($stock_key);
+        $remain_stock = Redis::get($stock_key);
         if ($remain_stock < $decr_num) dd('库存不足。。。。');
 
         // 扣库存操作
-        \Illuminate\Support\Facades\Redis::multi();
-        if (($b = \Illuminate\Support\Facades\Redis::decr($stock_key, $decr_num)) < 0) {
+        Redis::multi();
+        if (($b = Redis::decr($stock_key, $decr_num)) < 0) {
             // 库存不足，事务回滚
-            \Illuminate\Support\Facades\Redis::discard();
+            Redis::discard();
             return '库存不足';
         }
-        \Illuminate\Support\Facades\Redis::exec();
+        Redis::exec();
 
         // 记录一下库存的递减情况
         \Illuminate\Support\Facades\Log::info(
@@ -63,7 +64,7 @@ Route::get('/test_redlock', function (Faker $faker) {
 // 测试高并发扣库存操作-预扣库存方式
 Route::get('/test_redlock2', function (Faker $faker) {
     $stock_key = 'stock_key';
-    $remain_stock = \Illuminate\Support\Facades\Redis::get($stock_key);
+    $remain_stock = Redis::get($stock_key);
     if ($remain_stock <= 0) dd('库存不足。。。。');
 
     \App\Services\RedisRedlockService::distributionLock('caogege-zhen-shuai', 1000, function ($lock_key, $lock, $start_time) use ($stock_key) {
@@ -72,13 +73,13 @@ Route::get('/test_redlock2', function (Faker $faker) {
 
         // 库存不足，直接返回
         $decr_num = rand(1, 10); // 模拟购买数量
-        $remain_stock = \Illuminate\Support\Facades\Redis::get($stock_key);
+        $remain_stock = Redis::get($stock_key);
         if ($remain_stock < $decr_num) dd('库存不足。。。。');
 
         // 预扣库存操作
-        if (($b = \Illuminate\Support\Facades\Redis::decr($stock_key, $decr_num)) < 0) {
+        if (($b = Redis::decr($stock_key, $decr_num)) < 0) {
             // 加回去
-            \Illuminate\Support\Facades\Redis::incr($stock_key, $decr_num);
+            Redis::incr($stock_key, $decr_num);
             return '库存不足';
         }
 
@@ -90,6 +91,35 @@ Route::get('/test_redlock2', function (Faker $faker) {
             '结束执行时间：'. \Illuminate\Support\Carbon::now()
         );
     });
+});
+
+
+// 测试高并发扣库存操作-直接使用decr预扣库存方式
+Route::get('/test_redlock3', function (Faker $faker) {
+    $start_time = \Illuminate\Support\Carbon::now();
+    $stock_key = 'stock_key';
+    $remain_stock = Redis::get($stock_key);
+    if ($remain_stock <= 0) dd('库存不足。。。。');
+
+    // 模拟处理时间，大于锁失效时间
+    sleep(3);
+
+    // 库存不足，直接返回
+    $decr_num = rand(1, 10); // 模拟购买数量
+    $remain_stock = Redis::get($stock_key);
+    if ($remain_stock < $decr_num) dd('库存不足。。。。');
+
+    // 预扣库存操作
+    if (($b = Redis::decr($stock_key, $decr_num)) < 0) {
+        $b = Redis::incr($stock_key, $decr_num);
+    }
+
+    // 记录一下库存的递减情况
+    \Illuminate\Support\Facades\Log::info(
+        '库存减去'.$decr_num.'后的值：'.($b ?? null).'----'.
+        '开始执行时间：'.$start_time.'----'.
+        '结束执行时间：'. \Illuminate\Support\Carbon::now()
+    );
 });
 
 
