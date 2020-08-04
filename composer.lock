@@ -2109,16 +2109,16 @@
         },
         {
             "name": "mjczz/blueprint_ex",
-            "version": "v1.0",
+            "version": "v1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mjczz/blueprint_ex.git",
-                "reference": "730dd2e13c8e5b7f43ae43379879098ebbb5707b"
+                "reference": "43748f0b790cf66c0c2ab126d2131b70d7422b4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mjczz/blueprint_ex/zipball/730dd2e13c8e5b7f43ae43379879098ebbb5707b",
-                "reference": "730dd2e13c8e5b7f43ae43379879098ebbb5707b",
+                "url": "https://api.github.com/repos/mjczz/blueprint_ex/zipball/43748f0b790cf66c0c2ab126d2131b70d7422b4b",
+                "reference": "43748f0b790cf66c0c2ab126d2131b70d7422b4b",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2164,7 +2164,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2020-07-21T12:19:03+00:00"
+            "time": "2020-08-04T05:16:54+00:00"
         },
         {
             "name": "monolog/monolog",
