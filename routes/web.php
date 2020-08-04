@@ -27,6 +27,20 @@ Route::get('/', function (Faker $faker) {
     return view('welcome');
 });
 
+// redis执行lua脚本
+Route::get('/redis_lua_req_limit', function (Faker $faker) {
+    $key = 'limit_req_'.get_client_ip();
+    $isLimited = \App\Services\CommonService::limitRequest($key, 10000, 1);
+
+    if ($isLimited) {
+        header('Is-Limited:1', true, 500);
+        return '访问频率过大';
+    }
+
+    header('Is-Limited:0', true, 200);
+    return '访问不受限制';
+});
+
 // 测试高并发扣库存操作-事务方式
 Route::get('/test_redlock', function (Faker $faker) {
     $stock_key = 'stock_key';
