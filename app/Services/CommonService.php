@@ -173,4 +173,32 @@ LUA;
         return $redis->eval($script, [$key, $decrNum], $numKeys);
     }
 
+    /**
+     * 生成树状结构
+     *
+     * @param array $array
+     *
+     * @return array
+     */
+    public function generateTree(array $array) : array
+    {
+        // 第一步 构造数据
+        $items = array();
+        foreach($array as $value){
+            $items[$value['id']] = $value;
+        }
+
+        // 第二部 遍历数据 生成树状结构
+        $tree = array();
+        foreach ($items as $k => $v) {
+            if (isset($items[$v['pid']])) {
+                $items[$v['pid']]['son'][$v['id']] = &$items[$k];
+            } else {
+                $tree[] = &$items[$k];
+            }
+        }
+
+        return $tree;
+    }
+
 }
