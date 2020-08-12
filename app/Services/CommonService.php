@@ -180,7 +180,7 @@ LUA;
      *
      * @return array
      */
-    public function generateTree(array $array) : array
+    public static function generateTree(array $array) : array
     {
         // 第一步 构造数据
         $items = array();
@@ -199,6 +199,29 @@ LUA;
         }
 
         return $tree;
+    }
+
+    /**
+     * 获取所有子项的id
+     *
+     * @param $item
+     *
+     * @return array
+     */
+    public static function getAllChildIds($item)
+    {
+        $ids = [];
+
+        if (isset($item['son'])) {
+            foreach ($item['son'] as $id => $v) {
+                $ids[] = $id;
+                if (isset($v['son'])) {
+                    $ids = array_unique(array_merge($ids, self::getIds($v)));
+                }
+            }
+        }
+
+        return $ids;
     }
 
 }
