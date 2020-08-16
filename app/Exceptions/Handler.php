@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Traits\ApiReturn;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
@@ -73,6 +74,10 @@ class Handler extends ExceptionHandler
             if ($exception instanceof ValidationException) {
                 $err_msg = $exception->validator->errors()->first();
                 return $this->fail($err_msg);
+            }
+
+            if ($exception instanceof AuthenticationException) {
+                return $this->fail('认证失败', '401');
             }
 
             return $this->fail($exception);

@@ -1,0 +1,93 @@
+models:
+  # 用户
+  HotUser:
+    username: string:100 default:'' comment:'用户姓名'
+    mobile: string:20 default:'' comment:'手机号'
+    app_user_id: unsignedinteger default:'0' comment:'对应的app端用户id'
+    red_bean_nums: unsignedinteger default:'0' comment:'红豆数量'
+    hot_bean_nums: unsignedinteger default:'0' comment:'hot数量'
+    frozen_hot_bean_nums: unsignedinteger default:'0' comment:'冻结hot数量'
+    hot_user_status: unsignedtinyinteger default:'1' comment:'用户状态1正常2冻结'
+    softDeletes
+    relationships:
+      hasMany: HotUserOrder,HotComplain,HotBeanExchange,HotPayAccount
+  # 付款账号
+  HotPayAccount:
+    account_type: unsignedtinyinteger default:'1' comment:'账号类型1支付宝2银行卡'
+    account: string:30 default:'' comment:'账号'
+    account_name: string:30 default:'' comment:'银行名称'
+    hot_user_id: unsignedinteger default:'0' comment:'用户id'
+    softDeletes
+    relationships:
+      belongsTo: HotUser
+  # 发布订单
+  HotPublishOrder:
+    lock_status: unsignedtinyinteger default:'1' comment:'发布订单锁定状态1未锁定2已锁定'
+    order_type: unsignedtinyinteger default:'1' comment:'发布订单类型1买入订单2卖出订单'
+    order_amount_type: unsignedtinyinteger default:'1' comment:'发布订单额度类型1小额交易2中等交易3大额交易'
+    nums: unsignedinteger default:'0' comment:'收购数或出售数'
+    frozen_nums: decimal:10,2 default:'0' comment:'冻结收购数或冻结出售数'
+    price: decimal:10,2 default:'0' comment:'收购价或出售价'
+    hot_user_id: unsignedinteger default:'0' comment:'发布人'
+    sales_service_charge: decimal:10,2 default:'0' comment:'卖出挂单或卖出时的手续费'
+    secret: string:20 default:'' comment:'交易密码'
+    softDeletes
+    relationships:
+      hasMany: HotUserOrder
+  # 用户订单
+  HotUserOrder:
+    publish_order_id: unsignedinteger default:'0' comment:'发布订单id'
+    order_no: string:100 default:'' comment:'订单编号'
+    order_type: unsignedtinyinteger default:'1' comment:'订单类型1买入订单2卖出订单'
+    order_status: unsignedtinyinteger default:'1' comment:'订单状态1已锁单2已取消3已付款4已完成5已关闭'
+    order_amount_type: unsignedtinyinteger default:'1' comment:'发布订单额度类型1小额交易2中等交易3大额交易'
+    nums: unsignedinteger default:'0' comment:'收购数或出售数'
+    price: decimal:10,2 default:'0' comment:'收购价或出售价'
+    amount: decimal:10,2 default:'0' comment:'总价'
+    hot_user_id: unsignedinteger default:'0' comment:'锁定人'
+    lock_time: timestamp nullable comment:'锁单时间'
+    pay_time: timestamp nullable comment:'付款时间'
+    confirm_time: timestamp nullable comment:'确认时间'
+    pay_attach: longtext nullable comment:'打款凭证'
+    softDeletes
+    relationships:
+      hasOne: HotComplain
+      belongsTo: HotPublishOrder,HotUser
+  # 申诉
+  HotComplain:
+    hot_user_id: unsignedinteger default:'0' comment:'申诉人'
+    order_id: unsignedinteger default:'0' comment:'用户订单id'
+    complain_type: unsignedtinyinteger default:'1' comment:'申诉类型1已付款未交易2未收到款货3其他原因'
+    complain_status: unsignedtinyinteger default:'1' comment:'申诉状态1处理中2已完成'
+    content: longtext nullable comment:'申诉内容'
+    content_pic: longtext nullable comment:'已付款未交易类型可添加图片'
+    softDeletes
+    relationships:
+      belongsTo: HotUser,HotUserOrder
+  # 兑换记录
+  HotBeanExchange:
+    hot_user_id: unsignedinteger default:'0' comment:'用户id'
+    exchange_type: unsignedtinyinteger default:'1' comment:'兑换类型1HOT兑换红豆2红豆兑换HOT'
+    from_nums: unsignedinteger default:'0' comment:'兑换数量'
+    to_nums: unsignedinteger default:'0' comment:'获得数量'
+    service_charge: decimal:10,2 default:'0' comment:'手续费'
+    softDeletes
+    relationships:
+      belongsTo: HotUser
+
+controllers:
+  HotUser:
+    resource: api
+  HotPayAccount:
+    resource: api
+  HotPublishOrder:
+    resource: api
+  HotUserOrder:
+    resource: api
+  HotComplain:
+    resource: api
+  HotBeanExchange:
+    resource: api
+
+seeders: HotUser,HotPublishOrder,HotUserOrder,HotPayAccount,HotComplain,HotBeanExchange
+

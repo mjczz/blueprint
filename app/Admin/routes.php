@@ -15,4 +15,6 @@ Route::group([
     $router->resource('news', NewsController::class);
     $router->resource('editor-files', EditorFilesController::class);
     $router->resource('sites', SiteController::class);
+    $router->resource('hot-users', HotUserController::class);
+    $router->resource('hot-user-orders', HotUserOrderController::class);
 });

@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Services\Hot\ScheduleService;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -28,6 +29,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('inspire')->everyTenMinutes();
 
         $schedule->command('route:list')->dailyAt('02:00');
+
+        ScheduleService::boot($schedule);
     }
 
     /**

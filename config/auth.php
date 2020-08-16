@@ -46,6 +46,12 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'hot' => [
+            'driver' => 'passport',
+            'provider' => 'hot_users',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -69,6 +75,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
+        ],
+
+        'hot_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\HotUser::class,
         ],
 
         // 'users' => [

@@ -2,6 +2,7 @@
 
 use App\Exceptions\ApiCommonException;
 use App\Services\CommonService;
+use Illuminate\Support\Facades\DB;
 
 /**
  * 获取客户端 ip
@@ -54,3 +55,18 @@ function options($key = null) {
     return CommonService::getOptions($key);
 }
 
+function transaction(\Closure $closure) {
+    try {
+        DB::beginTransaction();
+
+        $res = $closure();
+
+        DB::commit();
+
+        return $res;
+    } catch (\Throwable $t) {
+        DB::rollback();
+
+        throw $t;
+    }
+}

@@ -9,6 +9,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
 
 class CommonService
@@ -38,6 +39,59 @@ class CommonService
             'publish_status' => [
                 '1' => '是',
                 '2' => '否'
+            ],
+            // 发布订单锁定状态
+            'lock_status' => [
+                '1' => '未锁定',
+                '2' => '已锁定',
+            ],
+            // 订单类型
+            'order_type' => [
+                '1' => '买入订单',
+                '2' => '卖出订单',
+            ],
+            // 订单额度类型
+            'order_amount_type' => [
+                '1' => '小额交易',
+                '2' => '中等交易',
+                '3' => '大额交易',
+            ],
+            // 订单状态
+            'order_status' => [
+                '1' => '已锁单',
+                '2' => '已取消',
+                '3' => '已付款',
+                '4' => '已完成',
+                '5' => '已关闭',
+            ],
+            // 买方订单状态
+            'order_status_buyer' => [
+                '1' => '已锁单',
+                '2' => '确认付款',
+                '3' => '确认收货',
+                '4' => '已取消',
+            ],
+            // 卖方订单状态
+            'order_status_seller' => [
+                '1' => '已锁单',
+                '2' => '确认收款',
+                '3' => '释放hot',
+            ],
+            // 申诉类型
+            'complain_type' => [
+                '1' => '已付款未交易',
+                '2' => '未收到款(货)',
+                '3' => '其他原因',
+            ],
+            // 申诉状态
+            'complain_status' => [
+                '1' => '处理中',
+                '2' => '已完成',
+            ],
+            // 兑换类型
+            'exchange_type' => [
+                '1' => 'HOT兑换红豆',
+                '2' => '红豆兑换HOT',
             ],
         ];
 

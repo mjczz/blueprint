@@ -17,6 +17,7 @@
         "laravel-admin-ext/wang-editor": "^1.2",
         "laravel/framework": "^7.0",
         "laravel/horizon": "^4.3",
+        "laravel/passport": "^9.3",
         "laravel/socialite": "^4.4",
         "laravel/telescope": "^3.5",
         "laravel/tinker": "^2.0",
@@ -53,8 +54,8 @@
             "App\\": "app/"
         },
         "classmap": [
-            "database/seeds",
-            "database/factories"
+            "config/database/seeds",
+            "config/database/factories"
         ]
     },
     "autoload-dev": {
