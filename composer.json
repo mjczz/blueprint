@@ -54,8 +54,8 @@
             "App\\": "app/"
         },
         "classmap": [
-            "config/database/seeds",
-            "config/database/factories"
+            "database/seeds",
+            "database/factories"
         ]
     },
     "autoload-dev": {
