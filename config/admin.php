@@ -406,6 +406,10 @@ return [
                 'uploadImgServer' => '/api/upload',
                 'heght' => '600'
             ]
+        ],
+        'material-ui' => [
+            // If the value is set to false, this extension will be disabled
+            'enable' => true
         ]
     ],
 ];
