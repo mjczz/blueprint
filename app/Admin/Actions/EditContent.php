@@ -13,8 +13,6 @@ class EditContent extends RowAction
 
     public function handle(Model $model)
     {
-        // $model ...
-
         return $this->response()->success('Success message.')->refresh();
     }
 

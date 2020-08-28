@@ -37,6 +37,35 @@ class HotBeanExchange extends BaseModel
         'updated_at' => 'datetime Y-m-d H:i:s',
     ];
 
+    /**
+     * 查询条件
+     *
+     * @param $query \Illuminate\Database\Eloquent\Builder
+     * @param \Illuminate\Http\Request $request
+     */
+    public static function getWhere($query, $request)
+    {
+        $query->when($request['exchange_type'], function($query) use ($request){
+            $query->where("exchange_type", $request['exchange_type']);
+        });
+    }
+
+    /**
+     * 排序条件
+     *
+     * @param $query \Illuminate\Database\Eloquent\Builder
+     * @param \Illuminate\Http\Request $request
+     */
+    public static function orderBy($query, $request)
+    {
+        switch($request['order_by'] ?? 0) {
+            case 1:
+                break;
+            default:
+                $query->orderBy('id', 'desc');
+                break;
+        }
+    }
 
     public function hotUser()
     {

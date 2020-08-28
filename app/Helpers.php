@@ -11,9 +11,8 @@ use Illuminate\Support\Facades\DB;
 function get_client_ip()
 {
     static $realip = NULL;
-    if ($realip !== NULL) {
-        return $realip;
-    }
+    if ($realip !== NULL) return $realip;
+
     //判断服务器是否允许$_SERVER
     if (isset($_SERVER)) {
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -44,6 +43,7 @@ function tableSchema($table)
     $sql = "SELECT column_name,data_type,CHARACTER_MAXIMUM_LENGTH
             FROM information_schema.COLUMNS
             WHERE TABLE_NAME = '{$table}'";
+
     return DB::select($sql);
 }
 
@@ -58,9 +58,7 @@ function options($key = null) {
 function transaction(\Closure $closure) {
     try {
         DB::beginTransaction();
-
         $res = $closure();
-
         DB::commit();
 
         return $res;

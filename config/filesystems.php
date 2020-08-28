@@ -42,6 +42,21 @@ return [
     */
 
     'disks' => [
+        'qiniu' => [
+            'driver'  => 'qiniu',
+            'domains' => [
+                'default' => env("QINIU_DOMAIN"), // 你的七牛域名
+                'https' => '', // 你的HTTPS域名
+                'custom' => '', // Useless 没啥用，请直接使用上面的 default 项
+            ],
+            'access_key' => env('QINIU_AK'),
+            'secret_key' => env("QINIU_SK"),
+            'bucket' => env("QINIU_BUCKET"),
+            'notify_url' => '',  // 持久化处理回调地址
+            'access' => 'public',  // 空间访问控制 public 或 private
+            'hotlink_prevention_key' => null, // CDN 时间戳防盗链的 key。 设置为 null 则不启用本功能。
+            // 'hotlink_prevention_key' => 'cbab68a279xxxxxxxxxxab509a', // 同上，备用
+        ],
 
         'local' => [
             'driver' => 'local',
