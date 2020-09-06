@@ -24,6 +24,7 @@
         "laravel/tinker": "^2.0",
         "mjczz/blueprint_ex": "^1.0",
         "multicaret/laravel-acquaintances": "^3.3",
+        "phlak/twine": "^4.2",
         "signe/redlock-php": "^1.1",
         "small-rural-dog/store": "^1.0",
         "spatie/laravel-schemaless-attributes": "^1.7",

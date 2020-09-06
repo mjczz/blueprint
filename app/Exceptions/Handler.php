@@ -72,8 +72,7 @@ class Handler extends ExceptionHandler
 
             // 表单验证异常
             if ($exception instanceof ValidationException) {
-                $err_msg = $exception->validator->errors()->first();
-                return $this->fail($err_msg);
+                return $this->fail($exception->validator->errors()->first());
             }
 
             if ($exception instanceof AuthenticationException) {
