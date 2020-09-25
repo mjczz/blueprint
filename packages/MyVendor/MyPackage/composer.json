@@ -1,0 +1,43 @@
+{
+    "name": "myvendor/mypackage",
+    "description": ":package_description",
+    "license": "license",
+    "authors": [
+        {
+            "name": "author name",
+            "email": "author email",
+            "homepage": "author homepage"
+        }
+    ],
+    "homepage": "https://github.com/myvendor/mypackage",
+    "keywords": ["Laravel", "MyPackage"],
+    "require": {
+        "illuminate/support": "~5|~6|~7|~8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~8.0|~9.0",
+        "mockery/mockery": "^1.1",
+        "orchestra/testbench": "~3|~4|~5|~6",
+        "sempro/phpunit-pretty-print": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "MyVendor\\MyPackage\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MyVendor\\MyPackage\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MyVendor\\MyPackage\\MyPackageServiceProvider"
+            ],
+            "aliases": {
+                "MyPackage": "MyVendor\\MyPackage\\Facades\\MyPackage"
+            }
+        }
+    }
+}

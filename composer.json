@@ -84,5 +84,11 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
+    },
+    "repositories": {
+        "myvendor/mypackage": {
+            "type": "path",
+            "url": "/www/blueprint/packages/MyVendor/MyPackage"
+        }
     }
 }
